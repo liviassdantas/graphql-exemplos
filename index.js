@@ -1,5 +1,26 @@
 const { gql, ApolloServer } = require("apollo-server");
-
+const usuarios = [
+    {
+        idade: 23,
+        salario: 1000.0,
+        nome: "Fulano",
+        ativo: true,
+        id: "123",
+      },
+      {
+        idade: 25,
+        salario: 2000.0,
+        nome: "Ciclano",
+        ativo: false,
+        id: "124",
+      },
+      {
+        idade: 30,
+        salario: 3000.0,
+        nome: "Beltrano",
+        ativo: true,
+        id: "125",
+      },]
 const typeDefs = gql`
   type Produto {
     nome: String
@@ -14,29 +35,21 @@ const typeDefs = gql`
     id: ID
   }
   type Query {
-    usuario: Usuario
+    usuarios: [Usuario]
     produto: Produto
+    usuario(id: Int, nome: String): Usuario
   }
 `;
-
 const resolvers = {
   Query: {
-    usuario() {
-      return {
-        idade: 23,
-        salario: 1000.0,
-        nome: "Fulano",
-        ativo: true,
-        id: "123",
-      };
+    usuarios() {
+      return usuarios;
     },
-    produto() {
-      return {
-        nome: "Notebook",
-        valor: 2000.0,
-        id: "321",
-      };
-    }
+    usuario(_, args) {
+        const {id, nome} = args;
+        if(id)return usuarios.find((usuario) => usuario.id == args.id);
+        return usuarios.find((usuario) => usuario.nome == args.nome); 
+      },
   },
 };
 const server = new ApolloServer({
