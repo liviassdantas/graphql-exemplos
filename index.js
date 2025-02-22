@@ -7,6 +7,7 @@ const typeDefs = gql`
     nome: String
     ativo: Boolean
     id: ID
+    tecnologias: [String]
     }`;
 
 const resolvers = {
@@ -15,7 +16,8 @@ const resolvers = {
         salario: () => 1000.50,
         nome: () => "Fulano",
         ativo: () => true,
-        id: () => "123"
+        id: () => "123",
+        tecnologias: () => ["JavaScript", "Node.js", "React"]
     }
 };
 const server = new ApolloServer({
